@@ -57,7 +57,8 @@ ML: for ($i = 1; $i <= $max_iter; $i++) {
   }
 
   # get qiime-uclust score and seed seq
-  system("qiime-uclust.py --sort $fa_file --output $fa_file.sort --tmpdir $tmp_dir > /dev/null 2>&1");
+  #system("qiime-uclust.py --sort $fa_file --output $fa_file.sort --tmpdir $tmp_dir > /dev/null 2>&1");
+  system("qiime-uclust.py --sort $fa_file --output $fa_file.sort --uc $uc_file --tmpdir $tmp_dir");
   my $cmd_output = `qiime-uclust.py --input $fa_file.sort --uc $uc_file --id 0 --tmpdir $tmp_dir --rev 2>&1`;
   if($cmd_output) {
       chomp $cmd_output;

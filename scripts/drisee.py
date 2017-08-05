@@ -225,8 +225,11 @@ def get_sub_fasta(ids, index_seq, seq_file, sub_fasta):
 def process_bin(bin_id):
     bin_path = os.path.join(TMP_DIR, bin_id)
     os.mkdir(bin_path)
-    cmd = ['run_find_steiner.pl','-i',bin_path+'.fasta','-o',bin_path+'.score','-l',bin_path+'.log','-t',bin_path,'--max_iter',str(ITER_MAX),'--min_conv',str(CONV_MIN), '-s', seq_name+'.uc']
+    cmd = ['run_find_steiner.pl','--in_file',bin_path+'.fasta','--out_file',bin_path+'.score','--log_file',bin_path+'.log','--tmp_dir',bin_path,'--max_iter',str(ITER_MAX),'--min_conv',str(CONV_MIN)] #, '-s', seq_name+'.uc']
+    #print(' '.join(cmd))
     sto, ste = run_cmd(cmd)
+    #print(sto)
+    #print(ste)
     if LOG_FILE and (sto or ste):
         write_file("\n".join([sto, ste]), LOG_FILE, 1)
     #os.remove(bin_path+'.fasta')
@@ -273,6 +276,13 @@ def create_output(bps, match, error, per):
         else:
             row = map(lambda x: str(x), row)
         stext.append( "%d\t"%(i+1) + "\t".join(row) )
+
+
+    if total == 0:
+        print(bps)
+        print(match)
+        print(error)
+        print(per)
 
     err_head = map(lambda x: "%s_err"%x, bps)
     err_nums = map(lambda x: "%f"%(((errs[x] * 1.0) / total) * 100), bps)
